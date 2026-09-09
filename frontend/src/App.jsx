@@ -73,7 +73,7 @@ export default function App() {
   // Fetch windows
   const fetchWindows = useCallback(async () => {
     try {
-      const res = await fetch('/api/windows')
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/windows`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       setWindows(data)
@@ -88,7 +88,7 @@ export default function App() {
   // Fetch sync status
   const fetchSyncStatus = useCallback(async () => {
     try {
-      const res = await fetch('/api/sync/status')
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sync/status`)
       if (!res.ok) return
       const data = await res.json()
       setSyncStatus(data)
@@ -105,7 +105,7 @@ export default function App() {
 
   // Trigger sync
   const handleSync = async (payload) => {
-    const res = await fetch('/api/sync', {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sync`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -120,7 +120,7 @@ export default function App() {
 
   // Cancel sync
   const handleCancelSync = async () => {
-    await fetch('/api/sync/cancel', { method: 'POST' })
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sync/cancel`, { method: 'POST' })
     await fetchSyncStatus()
     showToast('Sync cancelled', 'success')
   }
@@ -160,7 +160,7 @@ export default function App() {
   // Reset seed data
   const handleReset = async () => {
     if (!confirm('Reset all windows and media to seed data? This cannot be undone.')) return
-    await fetch('/api/seed/reset', { method: 'POST' })
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/seed/reset`, { method: 'POST' })
     await fetchWindows()
     showToast('Data reset to seed defaults', 'success')
   }
